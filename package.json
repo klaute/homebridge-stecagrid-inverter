@@ -1,16 +1,16 @@
 {
-  "private": true,
-  "displayName": "Plugin Name",
-  "name": "homebridge-plugin-name",
+  "private": false,
+  "displayName": "Homebridge StecaGrid Inverter",
+  "name": "homebridge-stecagrid-inverter",
   "version": "1.0.0",
-  "description": "A short description about what your plugin does.",
+  "description": "The plugin reads out the current amount of gathered energy from a stecagrid 6003 inverter.",
   "license": "Apache-2.0",
   "repository": {
     "type": "git",
-    "url": "git://github.com/USERNAME/GITHUB_PROJECT_NAME.git"
+    "url": "git://github.com/klaute/homebridge-stecagrid-inverter.git"
   },
   "bugs": {
-    "url": "https://github.com/USERNAME/GITHUB_PROJECT_NAME/issues"
+    "url": "https://github.com/klaute/homebridge-stecagrid-inverter/issues"
   },
   "engines": {
     "node": ">=14.18.1",
