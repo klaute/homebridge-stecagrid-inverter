@@ -41,6 +41,7 @@ function power(log, config, api) {
     this.config = config;
     this.homebridge = api;
     this.power = 0;
+	this.percent = 0;
 
     if (this.config.powermax)
         this.powermax = this.config.powermax;
@@ -91,12 +92,14 @@ power.prototype = {
             res.on('end', () => {
                 // recv_data contains power info
                 let parsed_data = HTMLParser.parse(recv_data);
-                let pwr = parseFloat((HTMLParser.parse(parsed_data.getElementsByTagName('td')[41])).text.trim()) / this.powermax;
-                this.log('Read from StecaGrid inverter; power: ' + pwr + "W = " + Math.round(pwr*100)/100 + "%");
+                let pwr = parseFloat((HTMLParser.parse(parsed_data.getElementsByTagName('td')[41])).text.trim());
 
-                this.pwd = Math.round(pwr*100)/100 // convert it to percentual value to fit into Brightness characteristic of the bulb
+                this.power = pwr;
+                this.percent = Math.round(this.power / this.powermax * 100) / 100; // convert it to percentual value to fit into Brightness characteristic of the bulb
 
-                callback(null, this.pwr > 0);
+                this.log('Read from StecaGrid inverter; power: ' + pwr + "W = " + this.percent + "% of powermax = " + this.powermax + "W");
+
+                callback(null, this.power > 0);
             });
         });
         req.on('error', err => {
@@ -106,7 +109,7 @@ power.prototype = {
     },
     updateUI: function () {
         setTimeout( () => {
-            this.bulb.getCharacteristic(Characteristic.Brightness).updateValue(this.power);
+            this.bulb.getCharacteristic(Characteristic.Brightness).updateValue(this.percent);
             this.bulb.getCharacteristic(Characteristic.On).updateValue(this.power>0);
         }, 100);
     },
