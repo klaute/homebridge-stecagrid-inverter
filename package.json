@@ -1,7 +1,7 @@
 {
   "name": "homebridge-stecagrid-inverter",
   "displayName": "Homebridge StecaGrid Inverter",
-  "version": "0.0.1",
+  "version": "0.0.2",
   "description": "The plugin reads out the current amount of gathered energy from a stecagrid 6003 inverter.",
   "license": "Apache-2.0",
   "repository": {
