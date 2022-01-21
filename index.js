@@ -15,6 +15,7 @@ let Service, Characteristic;
 const http = require('http');   // HTTP POST / GET method.
 const { SSL_OP_NO_SESSION_RESUMPTION_ON_RENEGOTIATION } = require('constants');
 
+
 module.exports = function (homebridge) {
     /*
         API.registerAccessory(PluginIdentifier,
@@ -23,7 +24,7 @@ module.exports = function (homebridge) {
 
     Service = homebridge.hap.Service;
     Characteristic = homebridge.hap.Characteristic;
-    homebridge.registerAccessory('homebridge-stecagrid-inverter', 'StecaGrid_inverter_power', power);
+    homebridge.registerAccessory('homebridge-stecagrid-inverter', 'StecaGrid_Inverter', power);
 };
 
 /* 
@@ -81,19 +82,18 @@ power.prototype = {
     },    
     getPower: function(callback) {
         this.log('getPower');
-	var HTMLParser = require('node-html-parser');
+        var HTMLParser = require('node-html-parser');
 
         // read stecaGrid inverter power info
         let req = http.get('http://' + this.hostname + ':' + this.port + '/gen.measurements.table.js', res => {
             let recv_data = '';
             res.on('data', chunk => { recv_data += chunk});
             res.on('end', () => {
-                // recv_data contains power info.
+                // recv_data contains power info
                 let parsed_data = HTMLParser.parse(recv_data);
-		this.log(parsed_data.structure)
-		let pwr = parsed_data.querySelector("P AC"); // TODO  read out the correct data
-                this.log('Read from StecaGrid inverter; power: ' + pwr);
-                this.pwd = pwr;
+                let pwr = parseFloat((HTMLParser.parse(parsed_data.getElementsByTagName('td')[41])).text.trim()) / this.powermax;
+                this.log('Read from StecaGrid inverter; power: ' + pwr + "W = " + Math.round(pwr*100)/100 + "%");
+                this.pwd = Math.round(pwr*100)/100 // TODO also set is as percent of maximum possible
 
                 callback(null, this.pwr > 0);
             });
