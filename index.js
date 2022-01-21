@@ -61,12 +61,20 @@ function power(log, config, api) {
     else
         this.refreshInterval = 1000; // time as ms
 
+    this.bulb = new Service.Lightbulb(this.config.name);
+    // Set up Event Handler for bulb on/off
+    this.bulb.getCharacteristic(Characteristic.On)
+        .on("get", this.getPower.bind(this))
+    this.bulb.getCharacteristic(Characteristic.Brightness)
+        .on("get", this.getPower.bind(this))
+
     // polling
     this.timer = setTimeout(this.poll.bind(this), this.refreshInterval);
 };
 
 power.prototype = {
     getServices: function() {
+        if (!this.bulb) return [];
         const infoService =  new Service.AccessoryInformation();
         infoService.setCharacteristic(Characteristic.Manufacturer, 'StecaGrid inverter')
         return [infoService];
@@ -97,7 +105,7 @@ power.prototype = {
     },
     updateUI: function () {
         setTimeout( () => {
-            this.bulb.getCharacteristic(Characteristic.Power).updateValue(this.power);
+            this.bulb.getCharacteristic(Characteristic.Brightness).updateValue(this.power);
             this.bulb.getCharacteristic(Characteristic.On).updateValue(this.power>0);
         }, 100);
     },
