@@ -1,8 +1,8 @@
 {
   "private": false,
-  "displayName": "StecaGrid Inverter",
+  "displayName": "Homebridge StecaGrid Inverter",
   "name": "homebridge-stecagrid-inverter",
-  "version": "1.4.0",
+  "version": "0.0.1",
   "description": "Homebridge StecaGrid Inverter Plugin",
   "license": "Apache-2.0",
   "repository": {
