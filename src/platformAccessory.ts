@@ -1,13 +1,13 @@
 import { Service, PlatformAccessory, CharacteristicValue } from 'homebridge';
 
-import { StecaGridInverter } from './platform';
+import { ExampleHomebridgePlatform } from './platform';
 
 /**
  * Platform Accessory
  * An instance of this class is created for each accessory your platform registers
  * Each accessory may expose multiple services of different service types.
  */
-export class StecaGridInverterAccessory {
+export class ExamplePlatformAccessory {
   private service: Service;
 
   /**
@@ -20,7 +20,7 @@ export class StecaGridInverterAccessory {
   };
 
   constructor(
-    private readonly platform: StecaGridInverter,
+    private readonly platform: ExampleHomebridgePlatform,
     private readonly accessory: PlatformAccessory,
   ) {
 

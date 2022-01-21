@@ -1,5 +1,5 @@
 {
-  "pluginAlias": "StecaGridInverter",
+  "pluginAlias": "ExampleHomebridgePlugin",
   "pluginType": "platform",
   "singular": true,
   "schema": {
