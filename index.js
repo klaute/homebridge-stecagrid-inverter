@@ -76,7 +76,7 @@ power.prototype = {
     getServices: function() {
         if (!this.bulb) return [];
         const infoService =  new Service.AccessoryInformation();
-        infoService.setCharacteristic(Characteristic.Manufacturer, 'StecaGrid Inverter')
+        infoService.setCharacteristic(Characteristic.Manufacturer, 'klaute')
         return [infoService, this.bulb];
     },    
     getPower: function(callback) {
