@@ -113,7 +113,7 @@ power.prototype = {
         if(this.timer) clearTimeout(this.timer);
         this.timer = null;
 
-        // volume update from Sonos
+        // power value update from stecagrid
         this.getPower( (err, poweron) => {  //this.power updated.
             // update UI
             this.updateUI();
