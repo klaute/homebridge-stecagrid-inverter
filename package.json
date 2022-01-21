@@ -1,5 +1,5 @@
 {
-  "private": true,
+  "private": false,
   "displayName": "StecaGrid Inverter",
   "name": "homebridge-stecagrid-inverter",
   "version": "1.4.0",

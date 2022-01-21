@@ -9,7 +9,7 @@
         "title": "Name",
         "type": "string",
         "required": true,
-        "default": "StecaGrid Inverter Energy"
+        "default": "StecaGrid Inverter"
       },
       "Ip": {
         "title": "IP-adress to StecaGrid Inverter",

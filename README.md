@@ -18,7 +18,7 @@ This is a plugin for StecaGrid Inverters
 ```json
 "platforms": [
     {
-        "name": "StecaGrid Inverter Energy",
+        "name": "StecaGrid Inverter",
         "ip": "192.168.0.x",
         "port": "80",
         "UpdateTime": 5,
@@ -26,7 +26,7 @@ This is a plugin for StecaGrid Inverters
         "ViewElectricPowerProduction": false,
         "EveLoging": false,
         "Debug": false,
-        "platform": "StecaGridInverterEnergy"
+        "platform": "StecaGridInverter"
     }
 ]
 ```

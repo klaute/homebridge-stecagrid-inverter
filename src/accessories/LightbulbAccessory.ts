@@ -1,6 +1,6 @@
 import { Service, PlatformAccessory, CharacteristicValue, PlatformConfig, Logger, CharacteristicSetCallback } from 'homebridge';
 
-import { StecaGridInverterEnergyPlatform } from '../platform';
+import { StecaGridInverterPlatform } from '../platform';
 import { Site } from '../types/type';
 
 export class LightBulbAccessory {
@@ -8,7 +8,7 @@ export class LightBulbAccessory {
   private serviceSensor: Service;
 
   constructor(
-    private readonly platform: StecaGridInverterEnergyPlatform,
+    private readonly platform: StecaGridInverterPlatform,
     private readonly accessory: PlatformAccessory,
     private readonly site: Site,
     public readonly config: PlatformConfig,
