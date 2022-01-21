@@ -93,7 +93,8 @@ power.prototype = {
                 let parsed_data = HTMLParser.parse(recv_data);
                 let pwr = parseFloat((HTMLParser.parse(parsed_data.getElementsByTagName('td')[41])).text.trim()) / this.powermax;
                 this.log('Read from StecaGrid inverter; power: ' + pwr + "W = " + Math.round(pwr*100)/100 + "%");
-                this.pwd = Math.round(pwr*100)/100 // TODO also set is as percent of maximum possible
+
+                this.pwd = Math.round(pwr*100)/100 // convert it to percentual value to fit into Brightness characteristic of the bulb
 
                 callback(null, this.pwr > 0);
             });
