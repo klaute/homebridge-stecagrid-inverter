@@ -102,7 +102,7 @@ power.prototype = {
 
                 this.power = pwr;
                 // convert it to percentual value to fit into Brightness characteristic of the bulb
-                this.percent = Math.round(this.power / this.powermax * 100) / 100;
+                this.percent = Math.round(this.power * 10000 / this.powermax) / 100; // power / powermax range is 0 to 1. 10 = 100%
 
                 this.log('Read from StecaGrid inverter; power: ' + pwr + "W = " + this.percent + "% of powermax = " + this.powermax + "W");
 
