@@ -41,7 +41,7 @@ function power(log, config, api) {
     this.config = config;
     this.homebridge = api;
     this.power = 0;
-	this.percent = 0;
+    this.percent = 0;
 
     if (this.config.powermax)
         this.powermax = this.config.powermax;
@@ -80,7 +80,8 @@ power.prototype = {
         const infoService =  new Service.AccessoryInformation();
         infoService.setCharacteristic(Characteristic.Manufacturer, 'klaute')
         return [infoService, this.bulb];
-    },    
+    },
+
     getPower: function(callback) {
         this.log('getPower');
         var HTMLParser = require('node-html-parser');
@@ -92,10 +93,16 @@ power.prototype = {
             res.on('end', () => {
                 // recv_data contains power info
                 let parsed_data = HTMLParser.parse(recv_data);
-                let pwr = parseFloat((HTMLParser.parse(parsed_data.getElementsByTagName('td')[41])).text.trim());
+                let tmp_pwr = (HTMLParser.parse(parsed_data.getElementsByTagName('td')[41])).text.trim();
+                if (tmp_pwr == "---")
+                {
+                    tmp_pwr = "0"; // no power is gained
+                }
+                let pwr = parseFloat(tmp_pwr);
 
                 this.power = pwr;
-                this.percent = Math.round(this.power / this.powermax * 100) / 100; // convert it to percentual value to fit into Brightness characteristic of the bulb
+                // convert it to percentual value to fit into Brightness characteristic of the bulb
+                this.percent = Math.round(this.power / this.powermax * 100) / 100;
 
                 this.log('Read from StecaGrid inverter; power: ' + pwr + "W = " + this.percent + "% of powermax = " + this.powermax + "W");
 
@@ -107,12 +114,14 @@ power.prototype = {
             callback(err);
         })
     },
+
     updateUI: function () {
         setTimeout( () => {
             this.bulb.getCharacteristic(Characteristic.Brightness).updateValue(this.percent);
             this.bulb.getCharacteristic(Characteristic.On).updateValue(this.power>0);
         }, 100);
     },
+
     poll: function() {
         if(this.timer) clearTimeout(this.timer);
         this.timer = null;
