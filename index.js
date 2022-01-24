@@ -64,11 +64,15 @@ function power(log, config, api) {
         this.refreshInterval = 1000; // time as ms
 
     this.bulb = new Service.Lightbulb(this.config.name);
+
     // Set up Event Handler for bulb on/off
     this.bulb.getCharacteristic(Characteristic.On)
         .on("get", this.getPower.bind(this))
+        .on("set", this.setPower.bind(this));
+
     this.bulb.getCharacteristic(Characteristic.Brightness)
-        .on("get", this.getPower.bind(this))
+        .on("get", this.getPercent.bind(this))
+        .on("set", this.setPercent.bind(this));
 
     // polling
     this.timer = setTimeout(this.poll.bind(this), this.refreshInterval);
@@ -78,8 +82,35 @@ power.prototype = {
     getServices: function() {
         if (!this.bulb) return [];
         const infoService =  new Service.AccessoryInformation();
+
         infoService.setCharacteristic(Characteristic.Manufacturer, 'klaute')
+
         return [infoService, this.bulb];
+    },
+
+    getPercent: function (callback) {
+        this.log('getPercent');
+
+        // callback with percent read in getPercent
+        callback(null,this.percent);
+    },
+
+    setPercent: function(percent, callback) {
+
+        if (percent==100) {
+            callback(null);
+            return;
+        }
+
+        this.log('setPercent ' + percent);
+
+        // drop the new value
+        //this.percent = percent;
+        this.triggeredby = 'slider';
+
+        this.updateUI();
+
+        callback(null);
     },
 
     getPower: function(callback) {
@@ -98,6 +129,9 @@ power.prototype = {
                 {
                     tmp_pwr = "0"; // no power is gained
                 }
+
+                // DEBUG parameter tmp_pwr = "1001.7";
+
                 let pwr = parseFloat(tmp_pwr);
 
                 this.power = pwr;
@@ -105,15 +139,27 @@ power.prototype = {
                 // convert it to percentual value to fit into Brightness characteristic of the bulb
                 this.percent = Math.round(this.power * 100 / this.powermax);
 
+                this.updateUI();
+
                 this.log('Read data from StecaGrid inverter; power: ' + pwr + "W = " + this.percent + "% of powermax = " + this.powermax + "W");
 
                 callback(null, this.power > 0);
             });
         });
-        req.on('error', err => {
-            this.log("Error in getPower: "+ err.message);
-            callback(err);
-        })
+
+    },
+
+    setPower: function(on, callback) {
+
+        if (this.triggeredby=='slider') {
+            this.log('setPower triggered by slider')
+            delete this.triggeredby;
+        }
+        this.log('setPower ' + on);
+
+        this.updateUI();
+
+        callback(null);
     },
 
     updateUI: function () {
