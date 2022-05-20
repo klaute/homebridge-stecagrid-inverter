@@ -89,7 +89,6 @@ power.prototype = {
     },
 
     getPercent: function (callback) {
-        this.log('getPercent');
 
         // callback with percent read in getPercent
         callback(null,this.percent);
@@ -114,7 +113,6 @@ power.prototype = {
     },
 
     getPower: function(callback) {
-        this.log('getPower');
         var HTMLParser = require('node-html-parser');
 
         // read stecaGrid inverter power info
